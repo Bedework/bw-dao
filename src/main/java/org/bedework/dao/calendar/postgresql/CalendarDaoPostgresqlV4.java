@@ -10,8 +10,9 @@ public class CalendarDaoPostgresqlV4 extends CalendarDaoBaseV4 {
   protected String getSynchInfoQuery() {
     return """
             select lm.timestamp, lm.sequence from
-             bw_collection_lastmods
-             lm where path=:path""";
+             bw_collection_lastmods lm
+             where path=:path
+            """;
   }
 
   @Override

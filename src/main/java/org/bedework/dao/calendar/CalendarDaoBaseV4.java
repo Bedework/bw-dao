@@ -1,8 +1,8 @@
 package org.bedework.dao.calendar;
 
-import org.bedework.dao.common.DaoUtil;
+import org.bedework.dao.common.DaoBase;
 
-public abstract class CalendarDaoBaseV4 extends DaoUtil
+public abstract class CalendarDaoBaseV4 extends DaoBase
         implements CalendarDaoV4 {
 
   protected void initAppServer() {

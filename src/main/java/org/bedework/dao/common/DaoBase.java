@@ -20,7 +20,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public abstract class DaoUtil implements Logged {
+public abstract class DaoBase implements Logged {
   /**
    * Defines a regular expression to extract named parameters
    */
@@ -33,16 +33,19 @@ public abstract class DaoUtil implements Logged {
   public static final Pattern replaceParams =
           Pattern.compile("(?:.*?(\\:\\w*))");
 
-  record Param(int pos, String name, String value) {
+  public static record Param(int pos,
+                             String name,
+                             String value) {
   }
 
-  final Map<String, Param> paramMap = new HashMap<>();
+  private Map<String, Param> paramMap = new HashMap<>();
 
   protected boolean embeddedDrivers;
   protected String jdbcUrl;
   protected Connection c;
   protected boolean rolledBack;
   private String query;
+  protected String psText;
   protected PreparedStatement ps;
 
   /** Exception from this session. */
@@ -104,35 +107,56 @@ public abstract class DaoUtil implements Logged {
         ps.close();
       }
       this.query = query;
-      final var m = extractParams.matcher(query);
-      int pos = 1;
-      while (m.find()) {
-        paramMap.put(m.group(1),
-                     new Param(pos, m.group(1), null));
-        pos++;
-      }
+      paramMap = getParameters(query);
 
-      final var m1 = replaceParams.matcher(query);
-      final StringBuilder sb = new StringBuilder();
-      while (m.find()) {
-        final var m2 = replaceParams.matcher(m.group(0));
-        if (m2.find()) {
-          final StringBuilder stringBuilder =
-                  new StringBuilder(m2.group(0));
-          final String result =
-                  stringBuilder.replace(m2.start(1),
-                                        m2.end(1), "?")
-                               .toString();
-          m.appendReplacement(sb, result);
-        }
-      }
-      m.appendTail(sb);
-
-      ps = c.prepareStatement(sb.toString());
+      psText = replaceParameters(query);
+      ps = c.prepareStatement(psText);
     } catch (final SQLException se) {
       ps = null;
       handleException(se);
     }
+  }
+
+  public static Map<String, Param> getParameters(final String sql) {
+    final var m = extractParams.matcher(sql);
+    final Map<String, Param> ret = new HashMap<>();
+    int pos = 1;
+
+    while (m.find()) {
+      ret.put(m.group(1),
+              new Param(pos, m.group(1), null));
+      pos++;
+    }
+    return ret;
+  }
+
+  public static String replaceParameters(final String sql) {
+    final var m = replaceParams.matcher(sql);
+    final StringBuilder sb = new StringBuilder();
+
+    while (m.find()) {
+      final var m2 = replaceParams.matcher(m.group(0));
+      if (m2.find()) {
+        final StringBuilder stringBuilder =
+                new StringBuilder(m2.group(0));
+        final String result =
+                stringBuilder.replace(m2.start(1),
+                                      m2.end(1), "?")
+                             .toString();
+        m.appendReplacement(sb, result);
+      }
+    }
+    m.appendTail(sb);
+
+    return sb.toString();
+  }
+
+  /**
+   *
+   * @return String value use to create PreparedStatement
+   */
+  public String getPsText() {
+    return psText;
   }
 
   /** Set the named parameter with the given value
