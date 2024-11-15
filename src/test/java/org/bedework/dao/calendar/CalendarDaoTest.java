@@ -3,13 +3,14 @@ package org.bedework.dao.calendar;
 import org.bedework.dao.common.DaoBase;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestReporter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CalendarDaoTest {
   @Test
-  public void testBasics() {
+  public void testBasics(final TestReporter testReporter) {
 //    final var aDao = new CalendarDaoPostgresqlV4();
 
     final var aQuery = """
@@ -32,13 +33,14 @@ public class CalendarDaoTest {
     final var params = DaoBase.getParameters(aQuery);
     assertNotNull(params);
     if (params.isEmpty()) {
-      out("No parameters for " + aQuery);
+      testReporter.publishEntry("No parameters for " + aQuery);
     }
     for (final var k: params.keySet()) {
-      out(k + ": " + params.get(k));
+      testReporter.publishEntry(k + ": " + params.get(k));
     }
 
     final var psText = DaoBase.replaceParameters(aQuery);
+    testReporter.publishEntry("psText: " + psText);
     assertEquals(aPs, psText, "Expected correct ps text");
   }
 

@@ -123,8 +123,11 @@ public abstract class DaoBase implements Logged {
     int pos = 1;
 
     while (m.find()) {
-      ret.put(m.group(1),
-              new Param(pos, m.group(1), null));
+      final var par = m.group(1);
+      if (ret.containsKey(par)) {
+        throw new CalFacadeException("Duplicate parameter: " + par);
+      }
+      ret.put(par, new Param(pos, par, null));
       pos++;
     }
     return ret;
