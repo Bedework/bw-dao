@@ -32,7 +32,12 @@
 
     <dependency>
       <groupId>org.bedework</groupId>
-      <artifactId>bw-calendar-facade</artifactId>
+      <artifactId>bw-util-misc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.bedework</groupId>
+      <artifactId>bw-util-annotations</artifactId>
     </dependency>
 
     <dependency>
@@ -41,9 +46,60 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>joor</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <!-- Run annotation processors on src/main/java sources -->
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>5.1</version>
+        <executions>
+          <execution>
+            <id>process-test</id>
+            <goals>
+              <goal>process-test</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <excludes>
+              </excludes>
+              <processors>
+                <!-- list of processors to use -->
+                <processor>org.bedework.dao.annotations.DaoAp</processor>
+              </processors>
+              <!--
+              <compilerArguments>-AresourcePath=${basedir}/src/test/resources</compilerArguments>
+              <compilerArguments>-Adebug=false</compilerArguments>
+              -->
+              <options>
+                <resourcePath>${basedir}/src/test/resources</resourcePath>
+                <debug>true</debug>
+              </options>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -1,6 +1,5 @@
 package org.bedework.dao.common;
 
-import org.bedework.calfacade.exc.CalFacadeException;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 
@@ -57,7 +56,7 @@ public abstract class DaoBase implements Logged {
 
   /**
    * @return a timestamp from the db
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public abstract Timestamp getCurrentTimestamp();
 
@@ -83,7 +82,7 @@ public abstract class DaoBase implements Logged {
 
   /** Begin a transaction
    *
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void beginTransaction() {
     try {
@@ -125,7 +124,7 @@ public abstract class DaoBase implements Logged {
     while (m.find()) {
       final var par = m.group(1);
       if (ret.containsKey(par)) {
-        throw new CalFacadeException("Duplicate parameter: " + par);
+        throw new DaoException("Duplicate parameter: " + par);
       }
       ret.put(par, new Param(pos, par, null));
       pos++;
@@ -166,12 +165,12 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      String parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void setString(final String parName, final String parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -185,12 +184,12 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      boolean parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void setBool(final String parName, final boolean parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -204,12 +203,12 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      int parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void setInt(final String parName, final int parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -223,12 +222,12 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      long parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void setLong(final String parName, final long parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -242,12 +241,12 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      Object parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    * /
   public void setEntity(String parName, Object parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -261,13 +260,13 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      Object parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    * /
   public void setParameter(final String parName,
                            final Object parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -281,13 +280,13 @@ public abstract class DaoBase implements Logged {
    *
    * @param parName     String parameter name
    * @param parVal      Collection parameter value
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    * /
   public void setParameterList(final String parName,
                                final Collection<?> parVal) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -300,12 +299,12 @@ public abstract class DaoBase implements Logged {
   /** Set the first result for a paged batch
    *
    * @param val      int first index
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void setFirstResult(final int val) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -318,12 +317,12 @@ public abstract class DaoBase implements Logged {
   /** Set the max number of results for a paged batch
    *
    * @param val      int max number
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void setMaxResults(final int val) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -336,12 +335,12 @@ public abstract class DaoBase implements Logged {
   /* * Return the single object resulting from the query.
    *
    * @return Object          retrieved object or null
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    * /
   public Object getUnique() {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -355,12 +354,12 @@ public abstract class DaoBase implements Logged {
   /* * Return a list resulting from the query.
    *
    * @return List from query
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    * /
   public List<?> getList() {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
@@ -379,17 +378,17 @@ public abstract class DaoBase implements Logged {
 
   /**
    * @return int number updated
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public int executeUpdate() {
     if (exc != null) {
       // Didn't hear me last time?
-      throw new CalFacadeException(exc);
+      throw new DaoException(exc);
     }
 
     try {
       if (ps == null) {
-        throw new CalFacadeException("No query for execute update");
+        throw new DaoException("No query for execute update");
       }
 
       return ps.executeUpdate();
@@ -402,7 +401,7 @@ public abstract class DaoBase implements Logged {
 
   /** Rollback a transaction
    *
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void rollback() {
     if (rolledBack || (c == null)) {
@@ -421,7 +420,7 @@ public abstract class DaoBase implements Logged {
       
       c.rollback();
     } catch (final SQLException se) {
-      throw new CalFacadeException(se);
+      throw new DaoException(se);
     } finally {
       rolledBack = true;
     }
@@ -437,7 +436,7 @@ public abstract class DaoBase implements Logged {
 
   /** Commit a transaction
    *
-   * @throws CalFacadeException on fatal error
+   * @throws DaoException on fatal error
    */
   public void commit() {
     if (rolledBack || (c == null)) {
@@ -475,7 +474,7 @@ public abstract class DaoBase implements Logged {
   protected void handleException(final Throwable t) {
     if (!rolledBack && (c != null)) {
       rollback();
-      throw new CalFacadeException(t);
+      throw new DaoException(t);
     }
   }
 
