@@ -68,27 +68,27 @@ public class DaoProcessState extends ProcessState {
     // Make getter and setter for field.
 
     final var setsig = getClassHandler().generateSignature(
-            "set" + split.UCFieldName(),
+            "set" + split.ucFieldName(),
             el.getParameters(),
             el.getReturnType(),
             el.getThrownTypes());
     getClassHandler().addMethod(setsig + format(
             """
-                entity.set%s(getString("%s");
+                entity.set%s(getString("%s"));
               }
-            """, split.UCFieldName(), split.UCFieldName()));
+            """, split.ucFieldName(), split.fieldName()));
 
 
     final var getsig = getClassHandler().generateSignature(
-            "get" + split.UCFieldName(),
+            "get" + split.ucFieldName(),
             el.getParameters(),
             el.getReturnType(),
             el.getThrownTypes());
-    getClassHandler().addMethod(setsig + format(
+    getClassHandler().addMethod(getsig + format(
             """
                 setString("%s", entity.get%s());
               }
-            """, split.UCFieldName(), split.UCFieldName()));
+            """, split.fieldName(), split.ucFieldName()));
 
   }
 }

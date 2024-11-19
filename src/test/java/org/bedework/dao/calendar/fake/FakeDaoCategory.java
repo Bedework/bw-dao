@@ -18,6 +18,8 @@
 */
 package org.bedework.dao.calendar.fake;
 
+import org.bedework.dao.annotations.DaoEntity;
+import org.bedework.dao.annotations.DaoProperty;
 import org.bedework.util.misc.ToString;
 import org.bedework.util.misc.Util;
 
@@ -28,6 +30,7 @@ import java.util.Comparator;
  *.
  *  @version 1.0
  */
+@DaoEntity(tableName = "Categories")
 public class FakeDaoCategory extends FakeEntityProperty<FakeDaoCategory>
         implements Comparator<FakeDaoCategory> {
   private String word;
@@ -47,6 +50,7 @@ public class FakeDaoCategory extends FakeEntityProperty<FakeDaoCategory>
    *
    * @param val    BwString word
    */
+  @DaoProperty
   public void setWord(final String val) {
     word = val;
   }
@@ -71,6 +75,7 @@ public class FakeDaoCategory extends FakeEntityProperty<FakeDaoCategory>
    *
    * @param val    String category's description
    */
+  @DaoProperty
   public void setDescription(final String val) {
     description = val;
   }
@@ -95,6 +100,7 @@ public class FakeDaoCategory extends FakeEntityProperty<FakeDaoCategory>
    *
    * @param val    String name
    */
+  @DaoProperty
   public void setName(final String val) {
     name = val;
   }
