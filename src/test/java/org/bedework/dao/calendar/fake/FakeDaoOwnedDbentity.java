@@ -18,10 +18,6 @@
 */
 package org.bedework.dao.calendar.fake;
 
-import org.bedework.calfacade.annotations.Dump;
-import org.bedework.calfacade.annotations.ical.IcalProperty;
-import org.bedework.calfacade.base.BwDbentity;
-import org.bedework.util.calendar.PropertyIndex.PropertyInfoIndex;
 import org.bedework.util.misc.ToString;
 
 /** Base class for database entities with an owner.
@@ -60,7 +56,6 @@ public abstract class FakeDaoOwnedDbentity<T> extends FakeDaoEntity<T>
   }
 
   @Override
-  @Dump(elementName="public")
   public Boolean getPublick() {
     return publick;
   }

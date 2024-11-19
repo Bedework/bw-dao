@@ -1,11 +1,14 @@
 package org.bedework.dao.calendar.fake;
 
+import org.bedework.dao.annotations.DaoEntity;
+import org.bedework.dao.annotations.DaoProperty;
 import org.bedework.util.misc.ToString;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
+@DaoEntity(tableName = "Calendars")
 public class FakeCalendarEntity
         extends FakeDaoShareableContainedDbentity<FakeCalendarEntity> {
   /** The internal name of the calendar
@@ -143,6 +146,7 @@ public class FakeCalendarEntity
    *
    * @param val    String name
    */
+  @DaoProperty
   public void setName(final String val) {
     name = val;
   }
@@ -159,6 +163,7 @@ public class FakeCalendarEntity
    *
    * @param val    String path
    */
+  @DaoProperty
   public void setPath(final String val) {
     path = val;
     if (getLastmod() != null) {
@@ -178,6 +183,7 @@ public class FakeCalendarEntity
    *
    * @param val    String summary
    */
+  @DaoProperty
   public void setSummary(final String val) {
     summary = val;
   }
@@ -197,6 +203,7 @@ public class FakeCalendarEntity
    *
    * @param val    description
    */
+  @DaoProperty
   public void setDescription(final String val) {
     description = val;
   }
@@ -213,6 +220,7 @@ public class FakeCalendarEntity
    *
    * @param val    String mail list id
    */
+  @DaoProperty
   public void setMailListId(final String val) {
     mailListId = val;
   }
@@ -229,6 +237,7 @@ public class FakeCalendarEntity
    *
    * @param val    type
    */
+  @DaoProperty
   public void setCalType(final int val) {
     calType = val;
   }
@@ -244,6 +253,7 @@ public class FakeCalendarEntity
   /**
    * @param val - the created date
    */
+  @DaoProperty
   public void setCreated(final String val) {
     created = val;
   }
@@ -258,6 +268,7 @@ public class FakeCalendarEntity
   /**
    * @param val the lastmod
    */
+  @DaoProperty
   public void setLastmod(final FakeDaoCollectionLastmod val) {
     lastmod = val;
   }
@@ -272,6 +283,7 @@ public class FakeCalendarEntity
   /**
    * @param val - the filter expression
    */
+  @DaoProperty
   public void setFilterExpr(final String val) {
     filterExpr = val;
   }
@@ -287,6 +299,7 @@ public class FakeCalendarEntity
    *
    * @param val    type
    */
+  @DaoProperty
   public void setRefreshRate(final int val) {
     refreshRate = val;
   }
@@ -302,6 +315,7 @@ public class FakeCalendarEntity
   /**
    * @param val - the value
    */
+  @DaoProperty
   public void setLastRefresh(final String val) {
     lastRefresh = val;
   }
@@ -317,6 +331,7 @@ public class FakeCalendarEntity
   /**
    * @param val HTTP status or other appropriate value
    */
+  @DaoProperty
   public void setLastRefreshStatus(final String val) {
     lastRefreshStatus = val;
   }
@@ -331,6 +346,7 @@ public class FakeCalendarEntity
   /**
    * @param val - the value
    */
+  @DaoProperty
   public void setLastEtag(final String val) {
     lastEtag = val;
   }
@@ -346,6 +362,7 @@ public class FakeCalendarEntity
    *
    * @param val If non-null we have a remote id and encrypted password
    */
+  @DaoProperty
   public void setRemoteId(final String val) {
     remoteId = val;
   }
@@ -361,6 +378,7 @@ public class FakeCalendarEntity
    *
    * @param val If non-null the encrypted password
    */
+  @DaoProperty
   public void setRemotePw(final String val) {
     remotePw = val;
   }
@@ -376,6 +394,7 @@ public class FakeCalendarEntity
    *               CategorisedEntity interface methods
    * ============================================================== */
 
+  @DaoProperty
   public void setCategories(final Set<FakeDaoCategory> val) {
     categories = val;
   }
@@ -438,6 +457,7 @@ public class FakeCalendarEntity
    *
    * @param val   boolean true if the calendar is to be displayed
    */
+  @DaoProperty
   public void setDisplay(final boolean val) {
     display = val;
   }
@@ -454,6 +474,7 @@ public class FakeCalendarEntity
    *
    *  @param val    true if the calendar takes part in free/busy calculations
    */
+  @DaoProperty
   public void setAffectsFreeBusy(final boolean val) {
     affectsFreeBusy = val;
   }
@@ -470,6 +491,7 @@ public class FakeCalendarEntity
    *
    *  @param val    true if we ignore tranparency in free/busy calculations
    */
+  @DaoProperty
   public void setIgnoreTransparency(final boolean val) {
     ignoreTransparency = val;
   }
@@ -486,6 +508,7 @@ public class FakeCalendarEntity
    *
    * @param val   boolean true if the calendar is unremoveable
    */
+  @DaoProperty
   public void setUnremoveable(final boolean val) {
     unremoveable = val;
   }
@@ -503,6 +526,7 @@ public class FakeCalendarEntity
    * ============================================================== */
 
   @Override
+  @DaoProperty
   public void setHref(final String val) {
     setPath(val);
   }

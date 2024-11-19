@@ -80,7 +80,7 @@
             <goals>
               <goal>process-test</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>generate-test-sources</phase>
             <configuration>
               <excludes>
               </excludes>

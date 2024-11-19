@@ -19,7 +19,6 @@
 package org.bedework.dao.annotations;
 
 import org.bedework.util.annotations.AnnotationProcessor;
-import org.bedework.util.annotations.ElementVisitor;
 import org.bedework.util.annotations.ProcessState;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -44,10 +43,5 @@ public class DaoAp extends AnnotationProcessor {
       pstate = new DaoProcessState(env);
     }
     return pstate;
-  }
-
-  @Override
-  public ElementVisitor getVisitor() {
-    return new ElementVisitor();
   }
 }
