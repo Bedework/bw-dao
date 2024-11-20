@@ -3,9 +3,12 @@ package org.bedework.dao.annotations;
 import org.bedework.util.annotations.ElementVisitor;
 import org.bedework.util.annotations.ProcessState;
 
+import java.util.ArrayList;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 
 import static java.lang.String.format;
 
@@ -27,6 +30,10 @@ public class DaoProcessState extends ProcessState {
       return false;
     }
 
+    if (debug()) {
+      dumpElement("Class: ", el);
+    }
+
     final var process =
             el.getAnnotation(DaoEntity.class) != null;
 
@@ -44,6 +51,11 @@ public class DaoProcessState extends ProcessState {
   }
 
   @Override
+  public boolean shouldProcessSuperMethods(final TypeMirror tm) {
+    return tm.toString().startsWith("org.bedework.dao");
+  }
+
+  @Override
   public void endClass(final TypeElement el) {
     final var cw = getClassHandler();
     if (cw != null) {
@@ -57,6 +69,15 @@ public class DaoProcessState extends ProcessState {
             el.getAnnotation(DaoProperty.class);
     if (daoPropertyAnn == null) {
       return;
+    }
+
+    if (el.getParameters().size() != 1) {
+      warn("Only a single parameter allowed");
+      return;
+    }
+
+    if (debug()) {
+      dumpElement("Executable: ", el);
     }
 
     final var split = getClassHandler().getSplitMethodName(el);
@@ -81,8 +102,8 @@ public class DaoProcessState extends ProcessState {
 
     final var getsig = getClassHandler().generateSignature(
             "get" + split.ucFieldName(),
-            el.getParameters(),
-            el.getReturnType(),
+            new ArrayList<>(),
+            el.getParameters().get(0).asType(),
             el.getThrownTypes());
     getClassHandler().addMethod(getsig + format(
             """
