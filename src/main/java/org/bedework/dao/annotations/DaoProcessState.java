@@ -13,13 +13,27 @@ import javax.lang.model.type.TypeMirror;
 import static java.lang.String.format;
 
 public class DaoProcessState extends ProcessState {
+  private int daoVersion;
+
   public DaoProcessState(final ProcessingEnvironment env) {
     super(env);
   }
 
   @Override
+  public void option(final String name,
+                     final String value) {
+    if ("daoVersion".equals(name)) {
+      daoVersion = Integer.parseInt(value);
+    }
+  }
+
+  @Override
   public ElementVisitor getVisitor() {
     return new ElementVisitor();
+  }
+
+  public int getDaoVersion() {
+    return daoVersion;
   }
 
   @Override
@@ -67,7 +81,8 @@ public class DaoProcessState extends ProcessState {
   public void processMethod(final ExecutableElement el) {
     final var daoPropertyAnn =
             el.getAnnotation(DaoProperty.class);
-    if (daoPropertyAnn == null) {
+    if ((daoPropertyAnn == null) ||
+            !testVersion(daoPropertyAnn)) {
       return;
     }
 
@@ -85,6 +100,13 @@ public class DaoProcessState extends ProcessState {
     if (!split.setter()) {
       return;
     }
+
+    /* For each setter method in the entity we generate:
+        - A method to get the value from the result
+        - A method to set the value in a prepared statement
+        - Info to build the complete population of the entity
+        - Info to build the complete update of the entity
+     */
 
     // Make getter and setter for field.
 
@@ -111,5 +133,64 @@ public class DaoProcessState extends ProcessState {
               }
             """, split.fieldName(), split.ucFieldName()));
 
+  }
+
+  public enum VersionModifier {
+    lt, lte, gt, gte, eq
+  }
+  public record VersionSpecifier(
+          int version,
+          VersionModifier modifier) {}
+
+  public VersionSpecifier getVersionSpecifier(final String val) {
+    final int pos;
+    final VersionModifier mod;
+
+    if (val.startsWith("<")) {
+      mod = VersionModifier.lt;
+      pos = 1;
+    } else if (val.startsWith(">")) {
+      mod = VersionModifier.gt;
+      pos = 1;
+    } else if (val.startsWith("<=")) {
+      mod = VersionModifier.lte;
+      pos = 2;
+    } else if (val.startsWith(">=")) {
+      mod = VersionModifier.gte;
+      pos = 2;
+    } else {
+      mod = VersionModifier.eq;
+      pos = 0;
+    }
+
+    final int versionNumber = Integer.parseInt(val.substring(pos));
+    if (versionNumber < 0) {
+      throw new IllegalArgumentException(
+              format("Version < 0: %s", val));
+    }
+
+    return new VersionSpecifier(versionNumber, mod);
+  }
+
+  /**
+   *
+   * @param ann for property
+   * @return true to process method
+   */
+  public boolean testVersion(final DaoProperty ann) {
+    final var annV = ann.daoVersion();
+
+    if ((daoVersion <= 0) || annV.isEmpty()) {
+      return true;
+    }
+
+    final var vspec = getVersionSpecifier(annV);
+    return switch (vspec.modifier) {
+      case lt -> vspec.version < daoVersion;
+      case lte -> vspec.version <= daoVersion;
+      case gt -> vspec.version > daoVersion;
+      case gte -> vspec.version >= daoVersion;
+      case eq -> vspec.version == daoVersion;
+    };
   }
 }
