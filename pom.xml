@@ -96,6 +96,7 @@
                 <resourcePath>${basedir}/src/test/resources</resourcePath>
                 <debug>true</debug>
               </options>
+              <outputDirectory>${project.build.directory}/generated-test-sources/apt-test</outputDirectory>
             </configuration>
           </execution>
         </executions>

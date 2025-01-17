@@ -479,7 +479,11 @@ public abstract class DaoBase implements Logged {
   }
 
   private int fromName(final String name) {
-    return 0;
+    final var p = paramMap.get(name);
+    if (p == null) {
+      throw new DaoException("No such parameter: " + name);
+    }
+    return p.pos();
   }
 
   /* ==============================================================
