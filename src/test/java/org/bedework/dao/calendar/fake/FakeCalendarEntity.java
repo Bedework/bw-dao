@@ -2,7 +2,7 @@ package org.bedework.dao.calendar.fake;
 
 import org.bedework.dao.annotations.DaoEntity;
 import org.bedework.dao.annotations.DaoProperty;
-import org.bedework.util.misc.ToString;
+import org.bedework.base.ToString;
 
 import java.util.Date;
 import java.util.Set;

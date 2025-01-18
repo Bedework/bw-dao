@@ -18,7 +18,7 @@
 */
 package org.bedework.dao.calendar.fake;
 
-import org.bedework.util.misc.ToString;
+import org.bedework.base.ToString;
 import org.bedework.util.misc.Uid;
 
 /** Base for those classes that can be a property of an event and are all

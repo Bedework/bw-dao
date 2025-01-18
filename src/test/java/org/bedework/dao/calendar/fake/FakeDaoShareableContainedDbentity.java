@@ -18,7 +18,7 @@
 */
 package org.bedework.dao.calendar.fake;
 
-import org.bedework.util.misc.ToString;
+import org.bedework.base.ToString;
 
 /** Base class for shareable database entities that live within a container,
  * i.e. a calendar
