@@ -65,11 +65,6 @@ public abstract class DaoBase implements Logged {
    */
   public abstract Blob getBlob(byte[] val);
 
-  /**
-   * @return a blob
-   */
-  public abstract Blob getBlob(InputStream val, long length);
-
   public void initAppServer(final String jdbcUrl) {
     embeddedDrivers = false;
     this.jdbcUrl = jdbcUrl;
@@ -251,26 +246,6 @@ public abstract class DaoBase implements Logged {
 
     try {
       ps.setEntity(fromName(parName), parVal);
-    } catch (final Throwable t) {
-      handleException(t);
-    }
-  }
-
-  /* * Set the named parameter with the given value
-   *
-   * @param parName     String parameter name
-   * @param parVal      Object parameter value
-   * @throws DaoException on fatal error
-   * /
-  public void setParameter(final String parName,
-                           final Object parVal) {
-    if (exc != null) {
-      // Didn't hear me last time?
-      throw new DaoException(exc);
-    }
-
-    try {
-      ps.setParameter(fromName(parName), parVal);
     } catch (final Throwable t) {
       handleException(t);
     }
