@@ -2,8 +2,6 @@ package org.bedework.dao.calendar.postgresql;
 
 import org.bedework.dao.calendar.CalendarDaoBaseV4;
 
-import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Timestamp;
 
 public class CalendarDaoPostgresqlV4 extends CalendarDaoBaseV4 {
@@ -25,16 +23,6 @@ public class CalendarDaoPostgresqlV4 extends CalendarDaoBaseV4 {
 
   @Override
   public Timestamp getCurrentTimestamp() {
-    return null;
-  }
-
-  @Override
-  public Blob getBlob(final byte[] val) {
-    return null;
-  }
-
-  @Override
-  public Blob getBlob(final InputStream val, final long length) {
     return null;
   }
 }

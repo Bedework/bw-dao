@@ -4,7 +4,6 @@ import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -59,11 +58,6 @@ public abstract class DaoBase implements Logged {
    * @throws DaoException on fatal error
    */
   public abstract Timestamp getCurrentTimestamp();
-
-  /**
-   * @return a blob
-   */
-  public abstract Blob getBlob(byte[] val);
 
   public void initAppServer(final String jdbcUrl) {
     embeddedDrivers = false;
